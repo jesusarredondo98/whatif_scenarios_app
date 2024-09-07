@@ -1,0 +1,3 @@
+# Welcome to the "What-If Scenarios" App!
+
+Dive into an interactive exploration of diabetes data with our demo app. Here, we use a comprehensive dataset that provides insights into diabetes progression and its key variables. Experiment with various "what-if" scenarios to see how different factors influence the outcomes and gain valuable understanding of the underlying patterns in diabetes management.
