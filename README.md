@@ -24,7 +24,7 @@ Dive into an interactive exploration of diabetes data with our demo app. Here, w
 
 3. **Import the requirements**
 ```bash
-   streamlit run app.py
+   streamlit run what_if_scenarios.py
 ```
 
 App link: https://jesusarredondo98-whatif-scenarios-app-what-if-schenarios-dityjk.streamlit.app
