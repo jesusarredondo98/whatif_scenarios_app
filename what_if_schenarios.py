@@ -93,9 +93,9 @@ if option == "Model Visualization":
     fig = go.Figure()
 
     # Add traces for each line
-    fig.add_trace(go.Scatter(x=df['Index'], y=df['Actual Values'], mode='lines', name='Actual Values', line=dict(color='cyan', width=2.5)))
-    fig.add_trace(go.Scatter(x=df['Index'], y=df['Model Predictions'], mode='lines', name='Model Predictions', line=dict(color='yellow', width=2.5)))
-    fig.add_trace(go.Scatter(x=df['Index'], y=df['Adjusted Predictions'], mode='lines', name='Adjusted Predictions', line=dict(color='red', width=2.5)))
+    fig.add_trace(go.Scatter(x=df['Index'], y=df['Actual Values'], mode='lines', name='Actual Values', line=dict(color='cyan', width=4)))
+    fig.add_trace(go.Scatter(x=df['Index'], y=df['Model Predictions'], mode='lines', name='Model Predictions', line=dict(color='#d6d62b', width=4)))
+    fig.add_trace(go.Scatter(x=df['Index'], y=df['Adjusted Predictions'], mode='lines', name='Adjusted Predictions', line=dict(color='#ba4e64', width=4)))
 
     # Update layout
     fig.update_layout(
