@@ -13,14 +13,16 @@ Dive into an interactive exploration of diabetes data with our demo app. Here, w
 1. **Clone the repository**:
 ```bash
    git clone <https://github.com/jesusarredondo98/whatif_scenarios_app.git>
-   cd <whatif_scenarios_app>```
+   cd <whatif_scenarios_app>
+```
 
 2. **Create a virtual enviroment**
 ```bash
   python -m venv env
-  source env/bin/activate  # Para Windows: env\Scripts\activate```
+  source env/bin/activate  # Para Windows: env\Scripts\activate
+```
 
 3. **Import the requirements**
 ```bash
-   streamlit run app.py```
-
+   streamlit run app.py
+```
