@@ -3,6 +3,10 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import streamlit as st
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
@@ -25,7 +29,7 @@ if 'adjusted_coefs' not in st.session_state:
     st.session_state.adjusted_coefs = list(model.coef_)
 
 st.image('images/nartec.png', width=200)
-st.write("# WHAT IF SCENARIOS SUPERAPP")
+st.write("# What if scenarios SUPERAPP")
 st.write('Experiment with various "what-if" scenarios to see how different factors influence the outcomes and gain valuable understanding of the underlying patterns in diabetes management')
 
 # Tabs
@@ -46,21 +50,14 @@ if option == "Model Visualization":
     # Update session state with adjusted coefficients
     st.session_state.adjusted_coefs = adjusted_coefs
 
-    # Create a point with adjusted values for prediction
-    predicted_value = model.predict(X_train)
-    # Display the prediction
-    #st.write(f"### With the original parameters, the predicted Y value for the fisrt X_value {X_train[0]} is: {predicted_value[0]:.2f}")
-
     # Create and update the adjusted model using session state
     adjusted_model = LinearRegression()
     adjusted_model.coef_ = np.array(st.session_state.adjusted_coefs)
     adjusted_model.intercept_ = model.intercept_
 
-
     # Predict with the adjusted coefficients
     y_pred_adjusted = adjusted_model.predict(X_test)
 
-    #st.write(f"### With the adjustment parameters, the predicted Y value for the fisrt X_value {X_train[0]} is: {y_pred_adjusted[0]:.2f}")
     # Get the predictions from the original model
     y_pred = model.predict(X_test)
 
@@ -92,20 +89,26 @@ if option == "Model Visualization":
         "Adjusted Value": [adjusted_model.intercept_] + list(adjusted_model.coef_)
     })
 
-    # Visualization with Seaborn
-    plt.figure(figsize=(12, 6))
-    sns.lineplot(data=df, x='Index', y='Actual Values', label='Actual Values', color='cyan', linewidth=2.5)
-    sns.lineplot(data=df, x='Index', y='Model Predictions', label='Model Predictions', color='yellow', linewidth=2.5)
-    sns.lineplot(data=df, x='Index', y='Adjusted Predictions', label='Adjusted Predictions', color='red', linewidth=2.5)
-    plt.xlabel('Sample Index')
-    plt.ylabel('Y Value')
-    plt.title('Comparison between Actual Values and Predictions')
-    plt.legend()
-    plt.grid(True, linestyle='--', alpha=0.6)
-    plt.gca().set_facecolor('black')
-    plt.gca().tick_params(colors='white')
-    plt.gcf().patch.set_facecolor('black')
-    st.pyplot(plt)
+    # Visualization with Plotly
+    fig = go.Figure()
+
+    # Add traces for each line
+    fig.add_trace(go.Scatter(x=df['Index'], y=df['Actual Values'], mode='lines', name='Actual Values', line=dict(color='cyan', width=2.5)))
+    fig.add_trace(go.Scatter(x=df['Index'], y=df['Model Predictions'], mode='lines', name='Model Predictions', line=dict(color='yellow', width=2.5)))
+    fig.add_trace(go.Scatter(x=df['Index'], y=df['Adjusted Predictions'], mode='lines', name='Adjusted Predictions', line=dict(color='red', width=2.5)))
+
+    # Update layout
+    fig.update_layout(
+        title='Comparison between Actual Values and Predictions',
+        xaxis_title='Sample Index',
+        yaxis_title='Y Value',
+        plot_bgcolor='black',
+        paper_bgcolor='black',
+        font_color='white',
+        legend=dict(x=0, y=1, traceorder='normal')
+    )
+
+    st.plotly_chart(fig)
 
     # Display model parameters in a table
     st.write("### Model Parameters:")
@@ -145,7 +148,6 @@ elif option == "Model Parameters":
     st.write("### Adjusted Linear Regression Model Parameters:")
     st.dataframe(params_df)
 
-
     # Calculate evaluation metrics for both models
     def calculate_metrics(y_true, y_pred):
         return {
@@ -182,13 +184,22 @@ elif option == "Feature Importance":
     st.write("### Feature Importance in the Linear Regression Model:")
     st.dataframe(importance_df)
 
-    # Visualization of feature importance with Seaborn
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x=importance_df["Feature"], y=importance_df["Importance"], palette="viridis")
-    plt.xlabel('Feature')
-    plt.ylabel('Importance')
-    plt.title('Feature Importance')
-    plt.gca().set_facecolor('black')
-    plt.gca().tick_params(colors='white')
-    plt.gcf().patch.set_facecolor('black')
-    st.pyplot(plt)
+    # Visualization of feature importance with Plotly
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=importance_df["Feature"],
+        y=importance_df["Importance"],
+        marker_color='teal'
+    ))
+
+    fig.update_layout(
+        title='Feature Importance',
+        xaxis_title='Feature',
+        yaxis_title='Importance',
+        plot_bgcolor='black',
+        paper_bgcolor='black',
+        font_color='white'
+    )
+
+    st.plotly_chart(fig)
